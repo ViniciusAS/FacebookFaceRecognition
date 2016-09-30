@@ -1,8 +1,9 @@
-package view;
+package facerecognition.view;
 
-import facebookfacerecognition.FaceRecognition;
+import facerecognition.opencv.CameraSubject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -16,6 +17,9 @@ public class FXGUI extends BorderPane {
 
     private final Stage stage;
     private final Scene scene;
+    
+    private final CameraSubject cameraSubject;
+    
     private final CameraPane cameraPane;
     private final PeoplePane peoplePane;
     
@@ -27,6 +31,12 @@ public class FXGUI extends BorderPane {
         this.cameraPane = new CameraPane();
         this.peoplePane = new PeoplePane();
         initialize();
+        
+        cameraSubject = new CameraSubject();
+        cameraSubject.addObserver(cameraPane);
+        
+        cameraPane.addOnFaceDetectionListener(peoplePane);
+        cameraSubject.start();
     }
     
     private void initialize()
@@ -34,15 +44,19 @@ public class FXGUI extends BorderPane {
         setCenter( cameraPane );
         setBottom( peoplePane );
         
-        stage.setMinHeight( 800 );
-        stage.setMinWidth(  600 );
+        stage.setMinWidth(  800 );
+        stage.setMinHeight( 600 );
         
-        Platform.runLater(() -> {
-            stage.show();
-        });
+//        stage.setFullScreen(true);
         
         stage.setOnCloseRequest((WindowEvent t) -> {
-            FaceRecognition.getInstance().stop();
+            cameraSubject.stop();
+        });
+        
+        
+        Platform.runLater(() ->
+        {
+            stage.show();
         });
     }
     

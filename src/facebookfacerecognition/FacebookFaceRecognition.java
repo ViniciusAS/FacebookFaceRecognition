@@ -2,7 +2,7 @@ package facebookfacerecognition;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import view.FXGUI;
+import facerecognition.view.FXGUI;
 
 /**
  *
