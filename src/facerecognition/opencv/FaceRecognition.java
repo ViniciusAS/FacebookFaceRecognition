@@ -1,4 +1,4 @@
-package facebookfacerecognition;
+package facerecognition.opencv;
 
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;

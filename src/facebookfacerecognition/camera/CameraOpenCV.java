@@ -1,8 +1,7 @@
-package facerecognition.opencv;
+package facebookfacerecognition.camera;
 
-import facebookfacerecognition.FaceRecognition;
-import static facebookfacerecognition.FaceRecognition.mat2Image;
-import java.util.Observable;
+import facerecognition.opencv.FaceRecognition;
+import static facerecognition.opencv.FaceRecognition.mat2Image;
 import javafx.animation.AnimationTimer;
 import javafx.scene.image.Image;
 import org.opencv.core.Mat;
@@ -12,7 +11,7 @@ import org.opencv.videoio.VideoCapture;
  *
  * @author Vinicius Santos
  */
-public class CameraSubject extends Observable implements Runnable {
+public class CameraOpenCV extends ObservableCamera implements Runnable {
 
     private Thread thread;
     
@@ -23,7 +22,7 @@ public class CameraSubject extends Observable implements Runnable {
     private Image image;
     private final Mat mat;
     
-    public CameraSubject() {
+    public CameraOpenCV() {
         mat = new Mat();
         timer = new AnimationTimer() {
             @Override public void handle(long l)
@@ -33,7 +32,7 @@ public class CameraSubject extends Observable implements Runnable {
         };
     }
     
-    protected void captureImage()
+    private void captureImage()
     {
         videoCapture.read(mat);   
         image = mat2Image(mat);
@@ -42,6 +41,7 @@ public class CameraSubject extends Observable implements Runnable {
     }
     
     
+    @Override
     public void start(){
         thread = new Thread(this);
         thread.start();
@@ -53,16 +53,13 @@ public class CameraSubject extends Observable implements Runnable {
         timer.start();
     }
     
+    @Override
     public void stop(){
         timer.stop();
         videoCapture.release();
     }
-
-    @Override
-    public void notifyObservers() {
-        super.notifyObservers();
-    }
     
+    @Override
     public Image getImage(){
         return this.image;
     }

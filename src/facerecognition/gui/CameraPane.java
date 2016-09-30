@@ -1,7 +1,7 @@
-package facerecognition.view;
+package facerecognition.gui;
 
-import facerecognition.opencv.CameraSubject;
 import facerecognition.opencv.ElementDetector;
+import facebookfacerecognition.camera.ObservableCamera;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -70,24 +70,24 @@ public class CameraPane extends StackPane implements Observer {
     @Override
     public void update(Observable o, Object o1)
     {
-        if ( !( o instanceof CameraSubject ) )
+        if ( !( o instanceof ObservableCamera ) )
         {
             return;
         }
-        CameraSubject cameraSubject = (CameraSubject) o;
+        ObservableCamera cameraSubject = (ObservableCamera) o;
         updateFaces(
             cameraSubject.getImage(),
             cameraSubject.getMat()
         );
     }
     
-    private int count = 0;
+//    private int count = 0;
     private void updateFaces(Image image, Mat mat){
         
         g2DImage.clearRect(0, 0, getWidth(), getHeight());
         g2DImage.drawImage(image, this.getWidth(), 0, -this.getWidth(), this.getHeight());
         
-        if ( count++%3 == 0 ) {
+//        if ( count++%3 == 0 ) {
             final long t = System.currentTimeMillis();
             elementDetector.detectPositions(mat, (List<Rect> rectList) ->
                 {
@@ -134,7 +134,7 @@ public class CameraPane extends StackPane implements Observer {
                     });
                 }
             );
-        }
+//        }
     }
     
     public void addOnFaceDetectionListener(OnFaceDetectionListener onFaceDetectionListener){

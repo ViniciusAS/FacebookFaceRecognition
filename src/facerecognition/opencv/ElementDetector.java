@@ -1,11 +1,7 @@
 package facerecognition.opencv;
 
-import facebookfacerecognition.FaceRecognition;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javafx.geometry.Rectangle2D;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
