@@ -11,32 +11,34 @@
 #include <mutex>
 using namespace std;
 
-#include "FaceRecognition.h"
+#include <opencv2/core.hpp>
+
+#include "FaceRecognitionQueue.h"
 #include "tasksMutex.h"
 
 struct RecognitionTask {
     
-    FaceRecognition &recognition;
+    FaceRecognitionQueue &recognitionQueue;
     
-    RecognitionTask(FaceRecognition &recognition)
-        : recognition(recognition) {
+    RecognitionTask(FaceRecognitionQueue &recognitionQueue)
+        : recognitionQueue(recognitionQueue) {
     }
 
     void operator()(){
         mutex mtx;
         unique_lock<mutex> lock(mtx);
-        while ( recognition.isRunning() ) {
+        while ( recognitionQueue.isRunning() ) {
             
-            recognition.lockQueue();
-            if ( recognition.keepRunning() ){
+            recognitionQueue.lockQueue();
+            if ( recognitionQueue.keepRunning() ){
                 
-                Mat face = recognition.pop();
-                recognition.unlockQueue();
+                cv::Mat face = recognitionQueue.pop();
+                recognitionQueue.unlockQueue();
                 
-                recognition.recognize(face);
+                recognitionQueue.getRecognizer().recognize(face);
                 
             } else {
-                recognition.unlockQueue();
+                recognitionQueue.unlockQueue();
                 TasksMutex::condition.wait( lock );
             }
         }

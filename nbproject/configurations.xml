@@ -4,14 +4,16 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Arquivos de Cabeçalho"
                    projectFiles="true">
-      <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognition.h</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.h</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/recognition_task.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/tasksMutex.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Arquivos de Código-Fonte"
                    projectFiles="true">
-      <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognition.cpp</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -29,6 +31,7 @@
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
     </logicalFolder>
+    <itemPath>/home/viniciusas/Programacao/FaceRecognition/faces.csv</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
@@ -51,12 +54,27 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognition.cpp"
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognition.h"
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/faces.csv"
             ex="false"
             tool="3"
             flavor2="0">
@@ -100,12 +118,27 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
-      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognition.cpp"
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp"
             ex="false"
             tool="1"
             flavor2="0">
       </item>
-      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognition.h"
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/faces.csv"
             ex="false"
             tool="3"
             flavor2="0">

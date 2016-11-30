@@ -20,16 +20,19 @@ using namespace std;
 #include <opencv2/core.hpp>
 using namespace cv;
 
-class FaceRecognition {
+#include "FaceRecognizer.h"
+
+class FaceRecognitionQueue {
     
 public:
-    FaceRecognition();
+    FaceRecognitionQueue();
+    ~FaceRecognitionQueue();
     
     bool start();
+    bool start(const int &nThreads);
     void finish();
     
-    void recognize(const vector<Mat> &faces);
-    void recognize(Mat &face);
+    void addToQueue(const vector<Mat> &faces);
     
     unsigned getNThreads();
     
@@ -40,8 +43,14 @@ public:
     void unlockQueue();
     bool keepRunning();
     Mat pop();
+    
+    FaceRecognizer getRecognizer();
+    
+    
 private:
 
+    FaceRecognizer *faceRecognizer;
+    
     queue<Mat> facesQueue; 
     mutex queueMTX;
     

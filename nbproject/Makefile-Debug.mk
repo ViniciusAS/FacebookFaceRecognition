@@ -35,7 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/270dbb15/FaceRecognition.o \
+	${OBJECTDIR}/_ext/270dbb15/FaceRecognitionQueue.o \
+	${OBJECTDIR}/_ext/270dbb15/FaceRecognizer.o \
 	${OBJECTDIR}/main.o
 
 
@@ -63,10 +64,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/facerecognition: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/facerecognition ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/270dbb15/FaceRecognition.o: /home/viniciusas/Programacao/FaceRecognition/FaceRecognition.cpp
+${OBJECTDIR}/_ext/270dbb15/FaceRecognitionQueue.o: /home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/270dbb15
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/FaceRecognition.o /home/viniciusas/Programacao/FaceRecognition/FaceRecognition.cpp
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/FaceRecognitionQueue.o /home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp
+
+${OBJECTDIR}/_ext/270dbb15/FaceRecognizer.o: /home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/270dbb15
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/FaceRecognizer.o /home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}

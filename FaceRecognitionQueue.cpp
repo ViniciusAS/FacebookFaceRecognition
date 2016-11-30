@@ -5,19 +5,27 @@
  * Created on 27 de Novembro de 2016, 21:15
  */
 
-#include "FaceRecognition.h"
+#include "FaceRecognitionQueue.h"
 
 #include "recognition_task.h"
 #include "tasksMutex.h"
 
-FaceRecognition::FaceRecognition() {
+FaceRecognitionQueue::FaceRecognitionQueue() {
     threads = NULL;
     nThreads = 0;
+    faceRecognizer = new FaceRecognizer();
+}
+FaceRecognitionQueue::~FaceRecognitionQueue() {
+    delete faceRecognizer;
 }
 
 
-bool FaceRecognition::start(){
-    nThreads = std::thread::hardware_concurrency()-1;
+bool FaceRecognitionQueue::start(){
+    return this->start( std::thread::hardware_concurrency()-1 );
+}
+
+bool FaceRecognitionQueue::start(const int &nThreads){
+    this->nThreads = nThreads;
     threads = new thread[nThreads];
     if ( threads == NULL | nThreads == 0 ){
         return false;
@@ -29,7 +37,7 @@ bool FaceRecognition::start(){
     return true;
 }
 
-void FaceRecognition::finish() {
+void FaceRecognitionQueue::finish() {
     running = false;
     for (int i = 0; i < nThreads; i++) {
         TasksMutex::condition.notify_one();
@@ -40,16 +48,16 @@ void FaceRecognition::finish() {
     }
 }
 
-bool FaceRecognition::keepRunning(){
+bool FaceRecognitionQueue::keepRunning(){
     return ( facesQueue.size() > 0 );
 }
-Mat FaceRecognition::pop(){
+Mat FaceRecognitionQueue::pop(){
     Mat face = facesQueue.front();
     facesQueue.pop();
     return face;
 }
 
-void FaceRecognition::recognize(const vector<Mat> &faces){
+void FaceRecognitionQueue::addToQueue(const vector<Mat> &faces){
     for (const Mat &face : faces){
         queueMTX.lock();
         facesQueue.push(face);
@@ -58,22 +66,22 @@ void FaceRecognition::recognize(const vector<Mat> &faces){
     }
 }
 
-int i = 0;
-void FaceRecognition::recognize(Mat &face){
-    printf("Recognizing a face: %d; size: %lu\n", i++, facesQueue.size());
+
+FaceRecognizer FaceRecognitionQueue::getRecognizer() {
+    return *faceRecognizer;
 }
 
 
-unsigned FaceRecognition::getNThreads(){
+unsigned FaceRecognitionQueue::getNThreads(){
     return nThreads;
 }
-bool FaceRecognition::isRunning(){
+bool FaceRecognitionQueue::isRunning(){
     return running;
 }
 
-void FaceRecognition::lockQueue(){
+void FaceRecognitionQueue::lockQueue(){
     queueMTX.lock();
 }
-void FaceRecognition::unlockQueue(){
+void FaceRecognitionQueue::unlockQueue(){
     queueMTX.unlock();
 }
