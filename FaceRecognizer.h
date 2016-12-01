@@ -9,8 +9,14 @@
 #ifndef FACERECOGNIZER_H
 #define FACERECOGNIZER_H
 
+#include <vector>
+using namespace std;
+
 #include <opencv2/core.hpp>
 #include <opencv2/face.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/objdetect.hpp>
 using namespace cv;
 
 class FaceRecognizer {
@@ -21,6 +27,18 @@ private:
     const int num_components = 80;
     const double threshold = DBL_MAX;
     Ptr<face::FaceRecognizer> recognizer;
+    CascadeClassifier face_cascade;
+    
+    int im_width = 0;
+    int im_height = 0;
+    const std::string faces_file = "./faces.csv";
+    void loadFacesDatabaseFile();
+    void normalizeImages();
+    bool cropFace(Mat &image);
+    
+    vector<Mat> images;
+    vector<int> labels;
+    
 };
 
 #endif /* FACERECOGNIZER_H */

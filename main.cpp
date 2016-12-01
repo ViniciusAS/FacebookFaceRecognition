@@ -4,7 +4,6 @@
  *
  * Created on 25/11/2016, 16:11
  */
-
 #include <cstdlib>
 #include <vector>
 #include <string>
@@ -16,31 +15,8 @@ using namespace std;
 #include <opencv2/core.hpp>
 using namespace cv;
 
+#include "Constants.h"
 #include "FaceRecognitionQueue.h"
-
-const string OpenCV_dir  = "/usr/local/share/OpenCV";
-
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_eye.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_eye_tree_eyeglasses.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_lefteye_2splits.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_righteye_2splits.xml";
-//
-const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_frontalface_default.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_frontalcatface.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_frontalcatface_extended.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_frontalface_alt.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_frontalface_alt2.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_frontalface_alt_tree.xml";
-//
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_profileface.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_smile.xml";
-//
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_fullbody.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_lowerbody.xml";
-//const string faceCascadeFile = OpenCV_dir+"/haarcascades/haarcascade_upperbody.xml";
-
-
-const double scaleFactor = 1.9;
 
 
 FaceRecognitionQueue recognition;
@@ -55,12 +31,12 @@ bool init(){
         return false;
     }
     
-    if (!face_cascade.load(faceCascadeFile)){
+    if (!face_cascade.load(Constants::faceCascadeFile)){
         printf("Failed to load face cascade classifier\n");
         return false;
     }
     
-    capture.open( -1 );
+    capture.open( 0 );
     if (!capture.isOpened()){
         printf("Error opening video capture\n");
         return false;
@@ -78,7 +54,6 @@ int main(int argc, char** argv) {
     }
     
     Mat frame;
-    
     while (capture.read(frame))
     {
         if (frame.empty()){
@@ -108,7 +83,7 @@ std::vector<cv::Mat> detectAndDisplay(const cv::Mat &frame){
     
     cv::equalizeHist( frame_gray, frame_gray );
     
-    face_cascade.detectMultiScale(frame_gray, faces, scaleFactor, 2, 0|CASCADE_SCALE_IMAGE, Size(30,30));
+    face_cascade.detectMultiScale(frame_gray, faces, Constants::scaleFactor, 2, 0|CASCADE_SCALE_IMAGE, Size(30,30));
     
     for (const Rect &face : faces){
         cv::Point center( face.x+face.width/2, face.y+face.height/2 );
