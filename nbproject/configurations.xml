@@ -4,17 +4,23 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Arquivos de Cabeçalho"
                    projectFiles="true">
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/AppWindow.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/Constants.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.h</itemPath>
-      <itemPath>/home/viniciusas/Programacao/FaceRecognition/recognition_task.h</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/ObjectDetector.h</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/VideoArea.h</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/recognition_task_consumer.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/tasksMutex.h</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Arquivos de Código-Fonte"
                    projectFiles="true">
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/AppWindow.cpp</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/ObjectDetector.cpp</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/VideoArea.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -52,9 +58,20 @@
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
             <linkerLibStdlibItem>PosixThreads</linkerLibStdlibItem>
+            <linkerOptionItem>`pkg-config --libs gtkmm-3.0`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/AppWindow.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/AppWindow.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/viniciusas/Programacao/FaceRecognition/Constants.h"
             ex="false"
             tool="3"
@@ -80,12 +97,32 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/ObjectDetector.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/ObjectDetector.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/VideoArea.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/VideoArea.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/viniciusas/Programacao/FaceRecognition/faces.csv"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/viniciusas/Programacao/FaceRecognition/recognition_task.h"
+      <item path="/home/viniciusas/Programacao/FaceRecognition/recognition_task_consumer.h"
             ex="false"
             tool="3"
             flavor2="0">
@@ -121,9 +158,21 @@
         <linkerTool>
           <linkerLibItems>
             <linkerOptionItem>`pkg-config --libs opencv`</linkerOptionItem>
+            <linkerLibStdlibItem>PosixThreads</linkerLibStdlibItem>
+            <linkerOptionItem>`pkg-config --libs gtkmm-3.0`</linkerOptionItem>
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/AppWindow.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/AppWindow.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/viniciusas/Programacao/FaceRecognition/Constants.h"
             ex="false"
             tool="3"
@@ -149,12 +198,32 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/ObjectDetector.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/ObjectDetector.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/VideoArea.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/VideoArea.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/viniciusas/Programacao/FaceRecognition/faces.csv"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
-      <item path="/home/viniciusas/Programacao/FaceRecognition/recognition_task.h"
+      <item path="/home/viniciusas/Programacao/FaceRecognition/recognition_task_consumer.h"
             ex="false"
             tool="3"
             flavor2="0">

@@ -7,45 +7,31 @@
  */
 
 #include <fstream>
-#include <opencv2/imgcodecs.hpp>
 #include <stdlib.h>
-#include <opencv2/imgproc.hpp>
-#include <algorithm>
 #include <stdio.h>
 #include <string.h>
-#include <opencv2/objdetect.hpp>
 
 #include "Constants.h"
+#include "ObjectDetector.h"
 #include "FaceRecognizer.h"
 
 
 FaceRecognizer::FaceRecognizer() {
-//    if (!face_cascade.load(Constants::faceCascadeFile)){
-//        printf("Failed to load Cascade Classifier\n");
-//        exit(EXIT_FAILURE);
-//    }
     recognizer = face::createEigenFaceRecognizer( num_components, threshold );
+}
+
+void FaceRecognizer::init(){
     loadFacesDatabaseFile();
     if (images.size() == 0){
-        printf("No image found in file\n");
+        printf("Error: No valid image found in file\n");
         exit(EXIT_FAILURE);
     }
     normalizeImages();
-    recognizer->train(images,labels);
-}
-
-std::vector<Rect> faces;
-bool FaceRecognizer::cropFace(Mat &image){
-//    faces.clear();
-//    face_cascade.detectMultiScale(image, faces, Constants::scaleFactor, 2, 0|CASCADE_SCALE_IMAGE, Size(30,30));
-//    if ( faces.size() == 0 ){
-//        return false;
-//    }
-//    if ( faces.size() > 1 ){
-//        printf("Warning: 2 faces in one, using the first one\n");
-//    }
-//    image = image(faces[0]);
-    return true;
+    if (images.size() == 0){
+        printf("Error: Normalized images error, no face recognized\n");
+        exit(EXIT_FAILURE);
+    }
+    recognizer->train(images,labels);    
 }
 
 void FaceRecognizer::loadFacesDatabaseFile(){
@@ -70,12 +56,49 @@ void FaceRecognizer::loadFacesDatabaseFile(){
     }
 }
 
-void FaceRecognizer::normalizeImages(){
-    for (Mat &image:  images){
-        if (!cropFace(image)){
-            return;
+std::vector<Rect> faces;
+bool FaceRecognizer::cropFace(Mat &image){
+    if (image.rows == 0 | image.cols == 0 | image.empty()){
+        return false;
+    }
+    faces = ObjectDetector::roughDetectFaces(image);
+    if ( faces.size() == 0 ){
+//        std::printf("Warning: no face found at image, using it anyway\n");
+//        return true;
+        return false;
+    }
+    unsigned bigger = 0;
+    if ( faces.size() > 1 ){
+        std::printf("Warning: %lu faces found in one image, using the bigger one\n",faces.size());
+        unsigned area = 0;
+        for (unsigned i = 0; i < faces.size(); i++){
+            unsigned a = faces[0].width * faces[0].height;
+            if ( a > area ) {
+                area = a;
+                bigger = i;
+            }
         }
-        equalizeHist(image,image);
+    }
+    image = image(faces[bigger]);
+    return true;
+}
+
+int normalizeWarningCount = 0;
+void FaceRecognizer::normalizeImages(){
+    for (long unsigned int i = 0; i < images.size(); i++){
+        Mat &image = images[i];
+        if ( !cropFace(image) ){
+            std::printf(
+                "Normalize warning #%d: Training image label %d was invalid, removing from list\n",
+                ++normalizeWarningCount, labels[i]
+            );
+            images.erase( images.begin()+i );
+            labels.erase( labels.begin()+i );
+            normalizeImages();
+            break;
+        }
+        ObjectDetector::to_gray(image,image);
+        cv::equalizeHist(image,image);
         if ( im_width == 0 || im_height == 0 ){
             im_width  = image.cols;
             im_height = image.rows;
@@ -90,10 +113,9 @@ void FaceRecognizer::normalizeImages(){
     }
 }
 
-int i = 0;
-void FaceRecognizer::recognize(Mat &face) {
-    //printf("Recognizing a face: %d\n", ++i);
-    if (!cropFace(face)){
+void FaceRecognizer::recognize(Mat &face){
+    if ( face.rows == 0 | face.cols == 0 | face.empty() ){
+        std::printf("FATAL ERROR: empty face mat\n");
         return;
     }
     cv::resize(
@@ -105,7 +127,6 @@ void FaceRecognizer::recognize(Mat &face) {
     int prediction;
     double confidence;
     recognizer->predict(face,prediction,confidence);
-    if ( confidence < 26'000 )
-        printf( "Predicted face: %d, confidence: %f\n", prediction, confidence );
+    std::printf( "Predicted face: %d, confidence: %f\n", prediction, confidence );
 }
 

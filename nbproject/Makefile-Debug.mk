@@ -35,8 +35,11 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/_ext/270dbb15/AppWindow.o \
 	${OBJECTDIR}/_ext/270dbb15/FaceRecognitionQueue.o \
 	${OBJECTDIR}/_ext/270dbb15/FaceRecognizer.o \
+	${OBJECTDIR}/_ext/270dbb15/ObjectDetector.o \
+	${OBJECTDIR}/_ext/270dbb15/VideoArea.o \
 	${OBJECTDIR}/main.o
 
 
@@ -54,7 +57,7 @@ FFLAGS=
 ASFLAGS=
 
 # Link Libraries and Options
-LDLIBSOPTIONS=`pkg-config --libs opencv` -lpthread   
+LDLIBSOPTIONS=`pkg-config --libs opencv` -lpthread  `pkg-config --libs gtkmm-3.0`  
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
@@ -64,20 +67,35 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/facerecognition: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/facerecognition ${OBJECTFILES} ${LDLIBSOPTIONS}
 
+${OBJECTDIR}/_ext/270dbb15/AppWindow.o: /home/viniciusas/Programacao/FaceRecognition/AppWindow.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/270dbb15
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` `pkg-config --cflags gtkmm-3.0` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/AppWindow.o /home/viniciusas/Programacao/FaceRecognition/AppWindow.cpp
+
 ${OBJECTDIR}/_ext/270dbb15/FaceRecognitionQueue.o: /home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/270dbb15
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/FaceRecognitionQueue.o /home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` `pkg-config --cflags gtkmm-3.0` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/FaceRecognitionQueue.o /home/viniciusas/Programacao/FaceRecognition/FaceRecognitionQueue.cpp
 
 ${OBJECTDIR}/_ext/270dbb15/FaceRecognizer.o: /home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp
 	${MKDIR} -p ${OBJECTDIR}/_ext/270dbb15
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/FaceRecognizer.o /home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` `pkg-config --cflags gtkmm-3.0` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/FaceRecognizer.o /home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.cpp
+
+${OBJECTDIR}/_ext/270dbb15/ObjectDetector.o: /home/viniciusas/Programacao/FaceRecognition/ObjectDetector.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/270dbb15
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` `pkg-config --cflags gtkmm-3.0` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/ObjectDetector.o /home/viniciusas/Programacao/FaceRecognition/ObjectDetector.cpp
+
+${OBJECTDIR}/_ext/270dbb15/VideoArea.o: /home/viniciusas/Programacao/FaceRecognition/VideoArea.cpp
+	${MKDIR} -p ${OBJECTDIR}/_ext/270dbb15
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` `pkg-config --cflags gtkmm-3.0` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/270dbb15/VideoArea.o /home/viniciusas/Programacao/FaceRecognition/VideoArea.cpp
 
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+	$(COMPILE.cc) -g -s `pkg-config --cflags opencv` `pkg-config --cflags gtkmm-3.0` -std=c++14  -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
 
 # Subprojects
 .build-subprojects:

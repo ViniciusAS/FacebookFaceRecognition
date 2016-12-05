@@ -4,97 +4,53 @@
  *
  * Created on 25/11/2016, 16:11
  */
-#include <cstdlib>
-#include <vector>
-#include <string>
-using namespace std;
 
-#include <opencv2/objdetect.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
+#include <glibmm-2.4/glibmm/refptr.h>
+using namespace Glib;
+
+#include <gtkmm-3.0/gtkmm/application.h>
+using namespace Gtk;
+
+#include <thread>
+
 #include <opencv2/core.hpp>
-using namespace cv;
+#include <opencv2/videoio.hpp>
 
-#include "Constants.h"
-#include "FaceRecognitionQueue.h"
+#include "AppWindow.h"
 
-
-FaceRecognitionQueue recognition;
-VideoCapture capture;
-CascadeClassifier face_cascade;
-
-
-bool init(){
+void initServices(AppWindow *appWindow, bool *appRunning){
+    cv::VideoCapture capture;
     
-    if (!recognition.start()){
-        printf("Failed to start face recognition threads\n");
-        return false;
-    }
-    
-    if (!face_cascade.load(Constants::faceCascadeFile)){
-        printf("Failed to load face cascade classifier\n");
-        return false;
-    }
-    
-    capture.open( 0 );
-    if (!capture.isOpened()){
+    if ( !capture.open( 0 ) ){
         printf("Error opening video capture\n");
-        return false;
+        return;
     }
     
-    return true;
-}
-
-std::vector<cv::Mat> detectAndDisplay(const Mat &frame);
-
-int main(int argc, char** argv) {
-    
-    if ( !init() ){
-        return -1;
-    }
-    
-    Mat frame;
-    while (capture.read(frame))
+    cv::Mat frame;
+    while ( capture.read(frame) && *appRunning )
     {
         if (frame.empty()){
-            printf("No captured frame");
+            printf("No captured frame\n");
             break;
         }
-
-        const std::vector<Mat> faces = detectAndDisplay(frame);
-        recognition.addToQueue(faces);
-        
-        int c = waitKey(10);
-        if( (char)c == 27 ) { break; } // escape
+        appWindow->setFrame(frame);
     }
     capture.release();
-    recognition.finish();
-    
-    return 0;
 }
 
-std::vector<cv::Mat> detectAndDisplay(const cv::Mat &frame){
+
+int main(int argc, char**argv) {
+    bool isRunning = true;
     
-    vector<Rect> faces;
-    vector<Mat> matFaces;
-    Mat frame_gray;
+    RefPtr<Application> app = Application::create( "br.univali.lia.FaceRecognition" );
+    AppWindow appWindow;
     
-    cv::cvtColor( frame, frame_gray, COLOR_BGR2GRAY );
+    std::thread services( initServices, &appWindow, &isRunning );
+    int ret = app->run( appWindow, argc, argv );
     
-    cv::equalizeHist( frame_gray, frame_gray );
+    isRunning = false;
+    services.join();
+    appWindow.finish();
     
-    face_cascade.detectMultiScale(frame_gray, faces, Constants::scaleFactor, 2, 0|CASCADE_SCALE_IMAGE, Size(30,30));
-    
-    for (const Rect &face : faces){
-        cv::Point center( face.x+face.width/2, face.y+face.height/2 );
-        cv::Size axes( face.width/2, face.height/2 );
-        cv::ellipse( frame, center, axes, 0,0, 360, Scalar(0,0,0), 4, LINE_8, 0 );
-        
-        // the detected face
-        matFaces.push_back( frame_gray( face ) );
-    }
-    cv::flip(frame,frame,1);
-    cv::imshow("Capture - Face Detection",frame);
-    
-    return matFaces;
+    return ret;
 }

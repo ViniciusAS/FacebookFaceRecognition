@@ -26,7 +26,7 @@ class FaceRecognitionQueue {
     
 public:
     FaceRecognitionQueue();
-    ~FaceRecognitionQueue();
+    void init();
     
     bool start();
     bool start(const int &nThreads);
@@ -49,7 +49,7 @@ public:
     
 private:
 
-    FaceRecognizer *faceRecognizer;
+    FaceRecognizer faceRecognizer;
     
     queue<Mat> facesQueue; 
     mutex queueMTX;

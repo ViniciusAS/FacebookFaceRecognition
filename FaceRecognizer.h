@@ -14,20 +14,17 @@ using namespace std;
 
 #include <opencv2/core.hpp>
 #include <opencv2/face.hpp>
-#include <opencv2/highgui.hpp>
-#include <opencv2/imgproc.hpp>
-#include <opencv2/objdetect.hpp>
 using namespace cv;
 
 class FaceRecognizer {
 public:
     FaceRecognizer();
+    void init();
     void recognize(Mat &face);
 private:
     const int num_components = 80;
     const double threshold = DBL_MAX;
     Ptr<face::FaceRecognizer> recognizer;
-    CascadeClassifier face_cascade;
     
     int im_width = 0;
     int im_height = 0;

@@ -7,18 +7,17 @@
 
 #include "FaceRecognitionQueue.h"
 
-#include "recognition_task.h"
+#include "recognition_task_consumer.h"
 #include "tasksMutex.h"
 
 FaceRecognitionQueue::FaceRecognitionQueue() {
     threads = NULL;
     nThreads = 0;
-    faceRecognizer = new FaceRecognizer();
-}
-FaceRecognitionQueue::~FaceRecognitionQueue() {
-    delete faceRecognizer;
 }
 
+void FaceRecognitionQueue::init(){
+    faceRecognizer.init();
+}
 
 bool FaceRecognitionQueue::start(){
     return this->start( std::thread::hardware_concurrency()-1 );
@@ -32,7 +31,7 @@ bool FaceRecognitionQueue::start(const int &nThreads){
     }
     for (int i = 0; i < nThreads; i++) {
         thread &t = threads[i];
-        t = thread( RecognitionTask( *this ) );
+        t = thread( RecognitionTaskConsumer( *this ) );
     }
     return true;
 }
@@ -68,7 +67,7 @@ void FaceRecognitionQueue::addToQueue(const vector<Mat> &faces){
 
 
 FaceRecognizer FaceRecognitionQueue::getRecognizer() {
-    return *faceRecognizer;
+    return faceRecognizer;
 }
 
 

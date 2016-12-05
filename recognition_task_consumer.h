@@ -16,17 +16,18 @@ using namespace std;
 #include "FaceRecognitionQueue.h"
 #include "tasksMutex.h"
 
-struct RecognitionTask {
+struct RecognitionTaskConsumer {
     
     FaceRecognitionQueue &recognitionQueue;
     
-    RecognitionTask(FaceRecognitionQueue &recognitionQueue)
+    RecognitionTaskConsumer(FaceRecognitionQueue &recognitionQueue)
         : recognitionQueue(recognitionQueue) {
     }
 
     void operator()(){
         mutex mtx;
         unique_lock<mutex> lock(mtx);
+        std::printf("Consumer running\n");
         while ( recognitionQueue.isRunning() ) {
             
             recognitionQueue.lockQueue();
