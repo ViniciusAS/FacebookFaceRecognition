@@ -16,7 +16,7 @@ AppWindow::AppWindow()
         },
         this
     )
-{    
+{
     set_title("Face Recognition App");
     set_default_size(800,600);
     
@@ -27,11 +27,13 @@ AppWindow::AppWindow()
 void AppWindow::detectFacesThread(){
     std::mutex mtx;
     std::unique_lock<std::mutex> lock(mtx);
-    recognitionQueue.init();
+    printf("Initializing face recognition\n");
+    recognitionQueue.init(FaceRecognizer::InitType::LOAD);
     if ( !recognitionQueue.start() ){
-        printf("Failed to start face recognition threads\n");
+        printf("Failed to start face recognition consumer threads\n");
         exit(EXIT_FAILURE);
     }
+    printf("Faces detection from camera started\n");
     while ( keepRunning ){
         // wait when there is nothing to pop
         if ( frames.size() == 0 ) {

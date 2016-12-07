@@ -4,3 +4,6 @@ nbbuild/
 dist/
 nbdist/
 yalefaces/
+liafaces/
+train/imagesize-train.yml
+train/train.yml

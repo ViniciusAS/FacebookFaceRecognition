@@ -26,7 +26,7 @@ class FaceRecognitionQueue {
     
 public:
     FaceRecognitionQueue();
-    void init();
+    void init(FaceRecognizer::InitType initType);
     
     bool start();
     bool start(const int &nThreads);

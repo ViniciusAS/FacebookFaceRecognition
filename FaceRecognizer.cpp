@@ -1,4 +1,3 @@
-
 /* 
  * File:   FaceRecognizer.cpp
  * Author: viniciusas
@@ -10,9 +9,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
+#include <functional>
+#include <exception>
+#include <vector>
+using namespace std;
 #include "Constants.h"
 #include "ObjectDetector.h"
+#include "csv_handler.h"
 #include "FaceRecognizer.h"
 
 
@@ -20,39 +23,80 @@ FaceRecognizer::FaceRecognizer() {
     recognizer = face::createEigenFaceRecognizer( num_components, threshold );
 }
 
-void FaceRecognizer::init(){
-    loadFacesDatabaseFile();
-    if (images.size() == 0){
-        printf("Error: No valid image found in file\n");
+void FaceRecognizer::init(FaceRecognizer::InitType initType){
+    loadNamesFile();
+    switch (initType){
+
+        case InitType::LOAD:{
+            printf("Loading train\n");
+            ifstream f(train_file);
+            if (f.good()) {
+                try {
+                    // get train image size
+                    if (!CsvHandler::readCsvFile(imagesize_train_file,';',2,[this](string *values){
+                        im_width = stoi(values[0]);
+                        im_height = stoi(values[1]);
+                    }))
+                    { throw exception(); }
+                    // load train
+                    recognizer->load(train_file);
+                    break;
+                } catch (exception &e){
+                    printf("Error %s on attempt to load training\n", e.what());
+                }
+            } else {
+                printf("Warning: File not found\n");
+            }
+        }
+        case InitType::TRAIN:
+            printf("Traning\n");
+            loadFacesDatabaseFile();
+            if (images.size() == 0){
+                printf("Error: No valid image found in file\n");
+                exit(EXIT_FAILURE);
+            }
+            normalizeImages();
+            if (images.size() == 0){
+                printf("Error: Normalized images error, no face recognized\n");
+                exit(EXIT_FAILURE);
+            }
+            recognizer->train(images,labels);
+            recognizer->save(train_file);
+            // save train image size
+            vector<string*> values(1);
+            values[0] = new string[2]{
+                to_string(im_width),
+                to_string(im_height)
+            };
+            CsvHandler::writeCsvFile(imagesize_train_file,';',2,values);
+            break;
+    }
+}
+
+void FaceRecognizer::loadNamesFile(){
+    printf("Loading names\n");
+    if (!CsvHandler::readCsvFile(labels_file, ';', 2, [this](string *values)
+    {
+        names[stoi(values[0])] = values[1];
+    })){
+        printf("FATAL ERROR: CSV file %s not found\n", labels_file.c_str());
         exit(EXIT_FAILURE);
     }
-    normalizeImages();
-    if (images.size() == 0){
-        printf("Error: Normalized images error, no face recognized\n");
-        exit(EXIT_FAILURE);
-    }
-    recognizer->train(images,labels);    
 }
 
 void FaceRecognizer::loadFacesDatabaseFile(){
-    ifstream file( faces_file, ifstream::in );
-    if (!file){
-        printf("CSV file of faces not found\n");
-        exit(EXIT_FAILURE);
-    }
-    string line, path, classlabel;
-    while ( std::getline(file,line) ){
-        
-        if ( line.empty() ) continue;
-        if ( line.at(0) == '#' ) continue;
-        
-        std::stringstream sline(line);
-        std::getline(sline, classlabel, ';');
-        std::getline(sline, path);
+    printf("Loading faces\n");
+    if (!CsvHandler::readCsvFile(faces_file, ';', 2, std::function<void(string*)>([this](string *values)
+    {
+        string &classlabel = values[0];
+        string &path = values[1];
         if ( !path.empty() && !classlabel.empty() ) {
             images.push_back(imread(path,0));
-            labels.push_back(atoi(classlabel.c_str()));
+            labels.push_back(stoi(classlabel.c_str()));
         }
+    }))){
+        printf("FATAL ERROR: CSV file %s not found\n", faces_file.c_str());
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -61,7 +105,7 @@ bool FaceRecognizer::cropFace(Mat &image){
     if (image.rows == 0 | image.cols == 0 | image.empty()){
         return false;
     }
-    faces = ObjectDetector::roughDetectFaces(image);
+    faces = ObjectDetector::deepDetectFaces(image);
     if ( faces.size() == 0 ){
 //        std::printf("Warning: no face found at image, using it anyway\n");
 //        return true;
@@ -83,8 +127,8 @@ bool FaceRecognizer::cropFace(Mat &image){
     return true;
 }
 
-int normalizeWarningCount = 0;
 void FaceRecognizer::normalizeImages(){
+    unsigned normalizeWarningCount = 0;
     for (long unsigned int i = 0; i < images.size(); i++){
         Mat &image = images[i];
         if ( !cropFace(image) ){
@@ -94,8 +138,8 @@ void FaceRecognizer::normalizeImages(){
             );
             images.erase( images.begin()+i );
             labels.erase( labels.begin()+i );
-            normalizeImages();
-            break;
+            i--;
+            continue;
         }
         ObjectDetector::to_gray(image,image);
         cv::equalizeHist(image,image);
@@ -127,6 +171,6 @@ void FaceRecognizer::recognize(Mat &face){
     int prediction;
     double confidence;
     recognizer->predict(face,prediction,confidence);
-    std::printf( "Predicted face: %d, confidence: %f\n", prediction, confidence );
+    std::printf( "Predicted face: %d, confidence: %f, name: %s\n", prediction, confidence, names[prediction].c_str() );
 }
 

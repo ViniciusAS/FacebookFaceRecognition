@@ -15,8 +15,8 @@ FaceRecognitionQueue::FaceRecognitionQueue() {
     nThreads = 0;
 }
 
-void FaceRecognitionQueue::init(){
-    faceRecognizer.init();
+void FaceRecognitionQueue::init(FaceRecognizer::InitType initType){
+    faceRecognizer.init(initType);
 }
 
 bool FaceRecognitionQueue::start(){

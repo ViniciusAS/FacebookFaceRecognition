@@ -10,6 +10,7 @@
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/FaceRecognizer.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/ObjectDetector.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/VideoArea.h</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/csv_handler.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/recognition_task_consumer.h</itemPath>
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/tasksMutex.h</itemPath>
     </logicalFolder>
@@ -27,6 +28,7 @@
                    displayName="Arquivos de Recurso"
                    projectFiles="true">
       <itemPath>/home/viniciusas/Programacao/FaceRecognition/faces.csv</itemPath>
+      <itemPath>/home/viniciusas/Programacao/FaceRecognition/labels.csv</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Arquivos de Teste"
@@ -117,7 +119,17 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/csv_handler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/viniciusas/Programacao/FaceRecognition/faces.csv"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/labels.csv"
             ex="false"
             tool="3"
             flavor2="0">
@@ -218,7 +230,17 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/csv_handler.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="/home/viniciusas/Programacao/FaceRecognition/faces.csv"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="/home/viniciusas/Programacao/FaceRecognition/labels.csv"
             ex="false"
             tool="3"
             flavor2="0">

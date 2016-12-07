@@ -36,7 +36,10 @@ namespace Constants {
 //    const string lowerbody = OpenCV_dir+"/haarcascades/haarcascade_lowerbody.xml";
 //    const string upperbody = OpenCV_dir+"/haarcascades/haarcascade_upperbody.xml";
 
-    const double scaleFactor = 1.4;
+    const string defaultFaceDetection = frontalface_alt2;
+    
+    const double scaleFactor = 1.9;
+    const double deepScaleFactor = 1.009;
 
 }
 
