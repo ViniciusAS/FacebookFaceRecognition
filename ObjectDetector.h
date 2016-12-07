@@ -18,7 +18,7 @@ namespace ObjectDetector {
     
     vector<Rect> detectFaces(const Mat &frame);
     
-    vector<Rect> roughDetectFaces(const Mat &frame);
+    vector<Rect> deepDetectFaces(const Mat &frame);
     
 }
 

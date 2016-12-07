@@ -2,8 +2,7 @@
 
 namespace ObjectDetector {
     
-    CascadeClassifier face_cascade(Constants::frontalface_alt2);
-//    CascadeClassifier face_cascade_rough(Constants::frontalface_alt2);
+    CascadeClassifier face_cascade(Constants::defaultFaceDetection);
     
     void to_gray(const Mat &src, Mat &dst){
         // bgr to gray
@@ -20,7 +19,7 @@ namespace ObjectDetector {
         }
     }
 
-    vector<Rect> detectFaces(const Mat &frame, Mat &frame_gray, bool rough){
+    vector<Rect> detectFaces(const Mat &frame, Mat &frame_gray, bool deep){
 
         vector<Rect> faces;
         
@@ -29,12 +28,11 @@ namespace ObjectDetector {
         // Equalizes the histogram of a grayscale image.
         cv::equalizeHist( frame_gray, frame_gray );
 
-//        CascadeClassifier &classifier = ( rough ? face_cascade_rough : face_cascade );
-//        double scaleFactor            = ( rough ? 1.1 : Constants::scaleFactor  );
+        double scaleFactor = ( deep ? Constants::deepScaleFactor : Constants::scaleFactor  );
         
-        int flag = ( rough&!rough ? CV_HAAR_DO_CANNY_PRUNING : CV_HAAR_DO_ROUGH_SEARCH );
+        int flag = ( deep ? CASCADE_SCALE_IMAGE : CV_HAAR_DO_CANNY_PRUNING );
         // detect faces
-        face_cascade.detectMultiScale(frame_gray, faces, Constants::scaleFactor, 2, flag ); // 0|CASCADE_SCALE_IMAGE , Size(30,30)
+        face_cascade.detectMultiScale(frame_gray, faces, scaleFactor, 2, flag ); // 0|CASCADE_SCALE_IMAGE , Size(30,30)
 
         return faces;
     }
@@ -56,7 +54,7 @@ namespace ObjectDetector {
         return detectFaces( frame, frame_gray, false );
     }
     
-    vector<Rect> roughDetectFaces(const Mat &frame){
+    vector<Rect> deepDetectFaces(const Mat &frame){
         Mat frame_gray;
         return detectFaces( frame, frame_gray, true );
     }
