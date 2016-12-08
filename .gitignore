@@ -7,3 +7,6 @@ yalefaces/
 liafaces/
 train/imagesize-train.yml
 train/train.yml
+# added for ignoring opencv installation
+opencv/
+opencv_contrib/
