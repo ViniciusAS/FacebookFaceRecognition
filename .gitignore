@@ -1,12 +1,24 @@
-nbproject/private/
+# netbeans configuration files
+nbproject/private/private.xml
+nbproject/configurations.xml
+nbproject/project.properties
+
+# netbeans build folders
 build/
 nbbuild/
 dist/
 nbdist/
+.nb-gradle/
+
+
+# faces
 yalefaces/
 liafaces/
+
+# train files
 train/imagesize-train.yml
 train/train.yml
+
 # added for ignoring opencv installation
 opencv/
 opencv_contrib/
