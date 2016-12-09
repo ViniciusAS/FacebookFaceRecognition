@@ -5,7 +5,7 @@
  * Created on 25/11/2016, 16:11
  *
  *
- * Needed for running with some cameras:
+ * May need for some cameras:
  * LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libv4l/v4l2convert.so  ./compiled_file
  *
  *
