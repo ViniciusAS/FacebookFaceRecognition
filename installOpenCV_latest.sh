@@ -2,6 +2,7 @@
 set -e
 sudo apt install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt install python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
+sudo apt install libgtkmm-3.0-dev 
 
 git clone https://github.com/Itseez/opencv.git
 git clone https://github.com/Itseez/opencv_contrib.git
