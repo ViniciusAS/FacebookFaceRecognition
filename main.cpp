@@ -27,7 +27,7 @@ using namespace Gtk;
 void initServices(AppWindow *appWindow, bool *appRunning){
     cv::VideoCapture capture;
     
-    if ( !capture.open( 1 ) ){
+    if ( !capture.open( 0 ) ){
         printf("Error opening video capture\n");
         return;
     }
