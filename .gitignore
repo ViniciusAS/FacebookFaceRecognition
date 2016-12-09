@@ -1,14 +1,4 @@
-# netbeans configuration files
-nbproject/private/private.xml
-nbproject/configurations.xml
-nbproject/project.properties
 
-# netbeans build folders
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
 
 
 # faces
