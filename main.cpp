@@ -22,7 +22,8 @@ using namespace Gtk;
 #include <opencv2/core.hpp>
 #include <opencv2/videoio.hpp>
 
-#include "AppWindow.h"
+#include "appwindow.h"
+#include "facerecognizer.h"
 
 void initServices(AppWindow *appWindow, bool *appRunning){
     cv::VideoCapture capture;
@@ -44,8 +45,21 @@ void initServices(AppWindow *appWindow, bool *appRunning){
     capture.release();
 }
 
+int justTrain(){
+    FaceRecognizer faceRecognition;
+    if (!faceRecognition.init(FaceRecognizer::InitType::TRAIN)){
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
+}
 
 int main(int argc, char**argv) {
+
+    if ( argc > 1 && strcmp(argv[1],"train") == 0 ){
+        return justTrain();
+    }
+
+
     bool isRunning = true;
     
     RefPtr<Application> app = Application::create( "br.univali.lia.FaceRecognition" );

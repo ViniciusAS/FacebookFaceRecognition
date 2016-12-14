@@ -5,8 +5,8 @@
  * 
  * Created on 2 de Dezembro de 2016, 14:35
  */
-#include "ObjectDetector.h"
-#include "AppWindow.h"
+#include "objectdetector.h"
+#include "appwindow.h"
 
 AppWindow::AppWindow()
     :
@@ -15,20 +15,41 @@ AppWindow::AppWindow()
             appWindow->detectFacesThread();
         },
         this
-    )
+    ),
+    container( Gtk::ORIENTATION_HORIZONTAL, 0 )
 {
+
     set_title("Face Recognition App");
     set_default_size(800,600);
-    
-    add(videoArea);
-    videoArea.show();
+
+    container.pack_start(videoArea,Gtk::PACK_EXPAND_WIDGET,0);
+    container.pack_end(recognizedFaces,Gtk::PACK_SHRINK,0);
+
+    add(container);
+
+    recognizedFaces.addFace("teste 0");
+    show_all_children(true);
+
+    recognizedFaces.addFace("teste 1");
+    recognizedFaces.addFace("teste 2");
+
+    signal_key_release_event().connect( [&](GdkEventKey *e) -> bool{
+        if (e->keyval == GDK_KEY_E || e->keyval == GDK_KEY_e){
+            videoArea.toggleShowEigenFaceImage();
+        }
+        return true;
+    });
+    add_events(Gdk::KEY_RELEASE_MASK);
 }
 
 void AppWindow::detectFacesThread(){
     std::mutex mtx;
     std::unique_lock<std::mutex> lock(mtx);
     printf("Initializing face recognition\n");
-    recognitionQueue.init(FaceRecognizer::InitType::LOAD);
+    if ( !recognitionQueue.init(FaceRecognizer::InitType::LOAD) ){
+        printf("Failed to initialize face recognition\n");
+        exit(EXIT_FAILURE);
+    }
     if ( !recognitionQueue.start() ){
         printf("Failed to start face recognition consumer threads\n");
         exit(EXIT_FAILURE);

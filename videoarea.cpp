@@ -6,7 +6,7 @@
  * Created on 2 de Dezembro de 2016, 18:15
  */
 
-#include "VideoArea.h"
+#include "videoarea.h"
 
 VideoArea::VideoArea() {
     
@@ -39,8 +39,14 @@ void VideoArea::setFrame(const cv::Mat &img){
         1.0, 1.0,
         cv::INTER_CUBIC
     );
+    if ( showEigenFaceImage ){
+        cv::cvtColor(mat, mat, CV_BGR2GRAY);
+        cv::equalizeHist( mat, mat );
+        cv::cvtColor(mat, mat, CV_GRAY2RGB);
+    } else {
+        cv::cvtColor(mat, mat, CV_BGR2RGB);
+    }
     cv::flip(mat,mat,1);
-    cv::cvtColor(mat, mat, CV_BGR2RGB);
     this->frame = mat;
 }
 
@@ -59,6 +65,17 @@ void VideoArea::setFaces(const std::vector<cv::Rect>& faces){
         rects.push_back(r);
     }
     facesRects = rects;
+}
+
+
+void VideoArea::setShowEigenFaceImage(bool t){
+    showEigenFaceImage = t;
+}
+bool VideoArea::getShowEigenFaceImage(){
+    return showEigenFaceImage;
+}
+void VideoArea::toggleShowEigenFaceImage(){
+    showEigenFaceImage = !showEigenFaceImage;
 }
 
 bool VideoArea::on_draw (const Cairo::RefPtr<Cairo::Context> &cr)
