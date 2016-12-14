@@ -42,7 +42,7 @@ namespace CsvHandler {
         return true;
     }
     
-    bool writeCsvFile(const string &filename, const char &separator, const int &nCols, const vector<string*> &lines){
+    bool writeCsvFile(const string &filename, const char &separator, const size_t &nCols, const vector<string*> &lines){
         ofstream file( filename, ofstream::out );
         if (!file.good()){
             return false;

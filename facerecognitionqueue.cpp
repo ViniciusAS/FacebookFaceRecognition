@@ -5,31 +5,31 @@
  * Created on 27 de Novembro de 2016, 21:15
  */
 
-#include "FaceRecognitionQueue.h"
+#include "facerecognitionqueue.h"
 
 #include "recognition_task_consumer.h"
-#include "tasksMutex.h"
+#include "tasksmutex.h"
 
 FaceRecognitionQueue::FaceRecognitionQueue() {
     threads = NULL;
     nThreads = 0;
 }
 
-void FaceRecognitionQueue::init(FaceRecognizer::InitType initType){
-    faceRecognizer.init(initType);
+bool FaceRecognitionQueue::init(FaceRecognizer::InitType initType){
+    return faceRecognizer.init(initType);
 }
 
 bool FaceRecognitionQueue::start(){
     return this->start( std::thread::hardware_concurrency()-1 );
 }
 
-bool FaceRecognitionQueue::start(const int &nThreads){
+bool FaceRecognitionQueue::start(const unsigned &nThreads){
     this->nThreads = nThreads;
     threads = new thread[nThreads];
-    if ( threads == NULL | nThreads == 0 ){
+    if ( threads == NULL || nThreads == 0 ){
         return false;
     }
-    for (int i = 0; i < nThreads; i++) {
+    for (unsigned i = 0; i < nThreads; i++) {
         thread &t = threads[i];
         t = thread( RecognitionTaskConsumer( *this ) );
     }
@@ -38,10 +38,10 @@ bool FaceRecognitionQueue::start(const int &nThreads){
 
 void FaceRecognitionQueue::finish() {
     running = false;
-    for (int i = 0; i < nThreads; i++) {
+    for (size_t i = 0; i < nThreads; i++) {
         TasksMutex::condition.notify_one();
     }
-    for (int i = 0; i < nThreads; i++) {
+    for (size_t i = 0; i < nThreads; i++) {
         thread &t = threads[i];
         t.join();
     }

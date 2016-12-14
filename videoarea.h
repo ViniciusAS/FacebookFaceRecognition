@@ -29,16 +29,20 @@ public:
     VideoArea();
     void setFrame(const cv::Mat &img);
     void setFaces(const std::vector<cv::Rect> &faces);
+
+    void setShowEigenFaceImage(bool t);
+    bool getShowEigenFaceImage();
+    void toggleShowEigenFaceImage();
 protected:
     bool repaint();
     virtual bool on_draw (const Cairo::RefPtr<Cairo::Context> &cr);
 private:
-    
+    bool showEigenFaceImage = false;
+
     struct Rectangle {
         double x, y;
         double widht, height;
     };
-    
     
     cv::Mat frame;
     std::vector<Rectangle> facesRects;

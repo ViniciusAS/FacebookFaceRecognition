@@ -22,7 +22,7 @@ public:
     enum InitType { LOAD, TRAIN };
     
     FaceRecognizer();
-    void init(FaceRecognizer::InitType initType);
+    bool init(FaceRecognizer::InitType initType);
     void recognize(Mat &face);
     
 private:

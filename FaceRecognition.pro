@@ -4,11 +4,13 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    FaceRecognitionQueue.cpp \
-    FaceRecognizer.cpp \
-    AppWindow.cpp \
-    ObjectDetector.cpp \
-    VideoArea.cpp
+    recognizedfacerow.cpp \
+    recognizedfaceslist.cpp \
+    videoarea.cpp \
+    objectdetector.cpp \
+    facerecognizer.cpp \
+    facerecognitionqueue.cpp \
+    appwindow.cpp
 
 DISTFILES += \
     installOpenCV_latest.sh \
@@ -17,15 +19,17 @@ DISTFILES += \
     .gitignore
 
 HEADERS += \
-    FaceRecognitionQueue.h \
-    FaceRecognizer.h \
-    AppWindow.h \
-    Constants.h \
     csv_handler.h \
-    ObjectDetector.h \
     recognition_task_consumer.h \
-    tasksMutex.h \
-    VideoArea.h
+    recognizedfacerow.h \
+    videoarea.h \
+    recognizedfaceslist.h \
+    tasksmutex.h \
+    objectdetector.h \
+    facerecognizer.h \
+    facerecognitionqueue.h \
+    constants.h \
+    appwindow.h
 
 CONFIG += thread
 

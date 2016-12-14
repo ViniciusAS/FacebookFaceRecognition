@@ -9,8 +9,14 @@
 #ifndef APPWINDOW_H
 #define APPWINDOW_H
 
-#include <gtkmm-3.0/gtkmm/window.h>
-#include <gtkmm-3.0/gtkmm/image.h>
+#include <gtkmm/window.h>
+#include <gtkmm/image.h>
+#include <gtkmm/box.h>
+
+#include <sigc++/functors/ptr_fun.h>
+
+#include <gdkmm/event.h>
+
 #include <opencv2/core.hpp>
 #include <queue>
 #include <mutex>
@@ -18,8 +24,9 @@
 #include <vector>
 #include <condition_variable>
 
-#include "VideoArea.h"
-#include "FaceRecognitionQueue.h"
+#include "videoarea.h"
+#include "facerecognitionqueue.h"
+#include "recognizedfaceslist.h"
 
 class AppWindow : public Gtk::Window {
 public:
@@ -29,7 +36,10 @@ public:
     
     void finish();
 private:
+    Gtk::Box container;
     VideoArea videoArea;
+    RecognizedFacesList recognizedFaces;
+
     FaceRecognitionQueue recognitionQueue;
     
     cv::Mat currentFrame;

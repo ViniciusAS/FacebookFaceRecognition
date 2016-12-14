@@ -8,7 +8,7 @@
 using namespace cv;
 #include <vector>
 using namespace std;
-#include "Constants.h"
+#include "constants.h"
 
 namespace ObjectDetector {
     

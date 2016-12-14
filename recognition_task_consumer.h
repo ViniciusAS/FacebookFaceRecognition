@@ -13,8 +13,8 @@ using namespace std;
 
 #include <opencv2/core.hpp>
 
-#include "FaceRecognitionQueue.h"
-#include "tasksMutex.h"
+#include "facerecognitionqueue.h"
+#include "tasksmutex.h"
 
 struct RecognitionTaskConsumer {
     

@@ -1,4 +1,4 @@
-#include "ObjectDetector.h"
+#include "objectdetector.h"
 
 namespace ObjectDetector {
     
@@ -24,7 +24,7 @@ namespace ObjectDetector {
         vector<Rect> faces;
         
         to_gray(frame,frame_gray);
-        
+
         // Equalizes the histogram of a grayscale image.
         cv::equalizeHist( frame_gray, frame_gray );
 

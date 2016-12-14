@@ -13,17 +13,18 @@
 #include <exception>
 #include <vector>
 using namespace std;
-#include "Constants.h"
-#include "ObjectDetector.h"
+#include "constants.h"
+#include "objectdetector.h"
 #include "csv_handler.h"
-#include "FaceRecognizer.h"
+#include "facerecognizer.h"
 
 
 FaceRecognizer::FaceRecognizer() {
     recognizer = face::createEigenFaceRecognizer( num_components, threshold );
+//    recognizer = face::createFisherFaceRecognizer( num_components, threshold );
 }
 
-void FaceRecognizer::init(FaceRecognizer::InitType initType){
+bool FaceRecognizer::init(FaceRecognizer::InitType initType){
     loadNamesFile();
     switch (initType){
 
@@ -53,12 +54,12 @@ void FaceRecognizer::init(FaceRecognizer::InitType initType){
             loadFacesDatabaseFile();
             if (images.size() == 0){
                 printf("Error: No valid image found in file\n");
-                exit(EXIT_FAILURE);
+                return false;
             }
             normalizeImages();
             if (images.size() == 0){
                 printf("Error: Normalized images error, no face recognized\n");
-                exit(EXIT_FAILURE);
+                return false;
             }
             recognizer->train(images,labels);
             recognizer->save(train_file);
@@ -71,6 +72,7 @@ void FaceRecognizer::init(FaceRecognizer::InitType initType){
             CsvHandler::writeCsvFile(imagesize_train_file,';',2,values);
             break;
     }
+    return true;
 }
 
 void FaceRecognizer::loadNamesFile(){
@@ -102,7 +104,7 @@ void FaceRecognizer::loadFacesDatabaseFile(){
 
 std::vector<Rect> faces;
 bool FaceRecognizer::cropFace(Mat &image){
-    if (image.rows == 0 | image.cols == 0 | image.empty()){
+    if (image.rows == 0 || image.cols == 0 || image.empty()){
         return false;
     }
     faces = ObjectDetector::deepDetectFaces(image);
@@ -158,7 +160,7 @@ void FaceRecognizer::normalizeImages(){
 }
 
 void FaceRecognizer::recognize(Mat &face){
-    if ( face.rows == 0 | face.cols == 0 | face.empty() ){
+    if ( face.rows == 0 || face.cols == 0 || face.empty() ){
         std::printf("FATAL ERROR: empty face mat\n");
         return;
     }
