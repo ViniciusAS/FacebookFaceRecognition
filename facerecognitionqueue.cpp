@@ -10,7 +10,10 @@
 #include "recognition_task_consumer.h"
 #include "tasksmutex.h"
 
-FaceRecognitionQueue::FaceRecognitionQueue() {
+FaceRecognitionQueue::FaceRecognitionQueue(RecognizedFacesList *recognizedList)
+    :
+        faceRecognizer(recognizedList)
+{
     threads = NULL;
     nThreads = 0;
 }
@@ -50,16 +53,19 @@ void FaceRecognitionQueue::finish() {
 bool FaceRecognitionQueue::keepRunning(){
     return ( facesQueue.size() > 0 );
 }
-Mat FaceRecognitionQueue::pop(){
-    Mat face = facesQueue.front();
+QueueFace FaceRecognitionQueue::pop(){
+    QueueFace face = facesQueue.front();
     facesQueue.pop();
     return face;
 }
 
-void FaceRecognitionQueue::addToQueue(const vector<Mat> &faces){
-    for (const Mat &face : faces){
+void FaceRecognitionQueue::addToQueue(cv::Mat &original, std::vector<cv::Rect> facesRect, const vector<Mat> &faces){
+    for (size_t i = 0; i < faces.size(); i++){
+        QueueFace f;
+        f.original  = original(facesRect[i]);
+        f.processed = faces[i];
         queueMTX.lock();
-        facesQueue.push(face);
+        facesQueue.push(f);
         queueMTX.unlock();
         TasksMutex::condition.notify_one();
     }

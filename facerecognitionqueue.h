@@ -21,18 +21,21 @@ using namespace std;
 using namespace cv;
 
 #include "facerecognizer.h"
+#include "recognizedfaceslist.h"
+#include "queueface.h"
 
 class FaceRecognitionQueue {
     
 public:
-    FaceRecognitionQueue();
+
+    FaceRecognitionQueue(RecognizedFacesList *recognizedList);
     bool init(FaceRecognizer::InitType initType);
     
     bool start();
     bool start(const unsigned &nThreads);
     void finish();
     
-    void addToQueue(const vector<Mat> &faces);
+    void addToQueue( cv::Mat &original, std::vector<cv::Rect> facesRect, const vector<Mat> &faces );
     
     unsigned getNThreads();
     
@@ -42,16 +45,13 @@ public:
     void lockQueue();
     void unlockQueue();
     bool keepRunning();
-    Mat pop();
+    QueueFace pop();
     
     FaceRecognizer getRecognizer();
-    
-    
-private:
 
+private:
     FaceRecognizer faceRecognizer;
-    
-    queue<Mat> facesQueue; 
+    queue<QueueFace> facesQueue;
     mutex queueMTX;
     
     thread *threads;

@@ -10,28 +10,20 @@
 
 AppWindow::AppWindow()
     :
-    detectionThread(
-        [&](AppWindow *appWindow){
-            appWindow->detectFacesThread();
-        },
-        this
-    ),
-    container( Gtk::ORIENTATION_HORIZONTAL, 0 )
+        container( Gtk::ORIENTATION_HORIZONTAL, 0 ),
+        recognitionQueue(&recognizedFaces),
+        detectionThread( [this]{ detectFacesThread(); } )
 {
 
     set_title("Face Recognition App");
-    set_default_size(800,600);
+    set_default_size(1000,600);
 
     container.pack_start(videoArea,Gtk::PACK_EXPAND_WIDGET,0);
     container.pack_end(recognizedFaces,Gtk::PACK_SHRINK,0);
 
     add(container);
 
-    recognizedFaces.addFace("teste 0");
     show_all_children(true);
-
-    recognizedFaces.addFace("teste 1");
-    recognizedFaces.addFace("teste 2");
 
     signal_key_release_event().connect( [&](GdkEventKey *e) -> bool{
         if (e->keyval == GDK_KEY_E || e->keyval == GDK_KEY_e){
@@ -71,7 +63,7 @@ void AppWindow::detectFacesThread(){
         // send to gui
         videoArea.setFaces( faces );
         // queue to recognition
-        recognitionQueue.addToQueue(matFaces);
+        recognitionQueue.addToQueue(image,faces,matFaces);
     }
 }
 

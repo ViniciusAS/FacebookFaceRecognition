@@ -17,19 +17,26 @@ using namespace std;
 #include <opencv2/face.hpp>
 using namespace cv;
 
+#include "queueface.h"
+#include "recognizedfaceslist.h"
+
 class FaceRecognizer {
+
 public:
     enum InitType { LOAD, TRAIN };
-    
+
     FaceRecognizer();
+    FaceRecognizer(RecognizedFacesList *recognizedList);
     bool init(FaceRecognizer::InitType initType);
-    void recognize(Mat &face);
+    void recognize(QueueFace &face);
     
 private:
     const int num_components = 80;
     const double threshold = DBL_MAX;
     Ptr<face::FaceRecognizer> recognizer;
     
+    RecognizedFacesList *recognizedList;
+
     int im_width = 0;
     int im_height = 0;
     const std::string imagesize_train_file = "./train/imagesize-train.yml";
@@ -40,8 +47,8 @@ private:
     void loadFacesDatabaseFile();
     void normalizeImages();
     bool cropFace(Mat &image);
-    
-    vector<Mat> images;
+
+    vector<cv::Mat> images;
     vector<int> labels;
     map<int,std::string> names;
     

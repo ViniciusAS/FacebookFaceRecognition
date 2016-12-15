@@ -19,12 +19,18 @@ using namespace std;
 #include "facerecognizer.h"
 
 
-FaceRecognizer::FaceRecognizer() {
-    recognizer = face::createEigenFaceRecognizer( num_components, threshold );
-//    recognizer = face::createFisherFaceRecognizer( num_components, threshold );
+FaceRecognizer::FaceRecognizer(){
+}
+
+FaceRecognizer::FaceRecognizer(RecognizedFacesList *recognizedList)
+    : recognizedList(recognizedList)
+{
 }
 
 bool FaceRecognizer::init(FaceRecognizer::InitType initType){
+    recognizer = face::createEigenFaceRecognizer( num_components, threshold );
+//    recognizer = face::createFisherFaceRecognizer( num_components, threshold );
+
     loadNamesFile();
     switch (initType){
 
@@ -159,20 +165,21 @@ void FaceRecognizer::normalizeImages(){
     }
 }
 
-void FaceRecognizer::recognize(Mat &face){
-    if ( face.rows == 0 || face.cols == 0 || face.empty() ){
+void FaceRecognizer::recognize(QueueFace &face){
+    if ( face.processed.rows == 0 || face.processed.cols == 0 || face.processed.empty() ){
         std::printf("FATAL ERROR: empty face mat\n");
         return;
     }
     cv::resize(
-        face, face,
+        face.processed, face.processed,
         cv::Size(im_width,im_height),
         1.0, 1.0,
         INTER_CUBIC
     );
     int prediction;
     double confidence;
-    recognizer->predict(face,prediction,confidence);
-    std::printf( "Predicted face: %d, confidence: %f, name: %s\n", prediction, confidence, names[prediction].c_str() );
+    recognizer->predict(face.processed,prediction,confidence);
+//    std::printf( "Predicted face: %d, confidence: %f, name: %s\n", prediction, confidence, names[prediction].c_str() );
+    recognizedList->addFace(face.original,names[prediction].c_str());
 }
 
