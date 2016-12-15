@@ -1,6 +1,8 @@
 #ifndef RECOGNIZEDFACEROW_H
 #define RECOGNIZEDFACEROW_H
 
+#include <opencv2/core.hpp>
+
 #include <gtkmm/widget.h>
 #include <gtkmm/label.h>
 #include <gtkmm/grid.h>
@@ -8,17 +10,19 @@
 
 #include <glibmm/ustring.h>
 
-class RecognizedFaceRow : public Gtk::Box
+#include <pangomm/fontdescription.h>
+
+#include "matframearea.h"
+
+class RecognizedFaceRow : public Gtk::HBox
 {
 public:
-    RecognizedFaceRow(Glib::ustring lbl);
-    RecognizedFaceRow(const RecognizedFaceRow &recognizedFaceRow);
+    static const int width = 300;
+    RecognizedFaceRow(cv::Mat &image, Glib::ustring lbl);
 private:
+    void init();
+    MatFrameArea image;
     Gtk::Label label;
-    struct {
-        const int x = 80;
-        const int y = 2;
-    } size_request;
 };
 
 #endif // RECOGNIZEDFACEROW_H

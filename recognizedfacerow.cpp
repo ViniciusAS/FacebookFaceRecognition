@@ -1,18 +1,17 @@
 #include "recognizedfacerow.h"
 
-RecognizedFaceRow::RecognizedFaceRow(Glib::ustring lbl)
-    :
-      label(lbl)
+RecognizedFaceRow::RecognizedFaceRow(cv::Mat &image, Glib::ustring lbl)
+    : label(lbl)
 {
-    set_size_request( size_request.x, size_request.y );
-//    this->
-    pack_start(label,Gtk::PACK_SHRINK,1);
+    this->image.setFrame(image);
+    init();
 }
 
-
-RecognizedFaceRow::RecognizedFaceRow(const RecognizedFaceRow &recognizedFaceRow)
-    : label(recognizedFaceRow.label.get_text())
-{
-    set_size_request( size_request.x, size_request.y );
-    pack_start(label,Gtk::PACK_SHRINK,1);
+void RecognizedFaceRow::init(){
+    override_background_color(Gdk::RGBA("#EEEEEE"));
+    set_size_request( width );
+    set_spacing(0);
+    label.override_font(Pango::FontDescription("arial,serif  18"));
+    pack_start(image, Gtk::PACK_SHRINK, 0);
+    pack_start(label, Gtk::PACK_EXPAND_PADDING, 0 );
 }

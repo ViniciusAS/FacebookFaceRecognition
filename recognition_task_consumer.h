@@ -13,11 +13,12 @@ using namespace std;
 
 #include <opencv2/core.hpp>
 
+#include "queueface.h"
 #include "facerecognitionqueue.h"
 #include "tasksmutex.h"
 
 struct RecognitionTaskConsumer {
-    
+
     FaceRecognitionQueue &recognitionQueue;
     
     RecognitionTaskConsumer(FaceRecognitionQueue &recognitionQueue)
@@ -33,7 +34,7 @@ struct RecognitionTaskConsumer {
             recognitionQueue.lockQueue();
             if ( recognitionQueue.keepRunning() ){
                 
-                cv::Mat face = recognitionQueue.pop();
+                QueueFace face = recognitionQueue.pop();
                 recognitionQueue.unlockQueue();
                 
                 recognitionQueue.getRecognizer().recognize(face);

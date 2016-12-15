@@ -24,7 +24,7 @@
 #include <vector>
 #include <condition_variable>
 
-#include "videoarea.h"
+#include "matframearea.h"
 #include "facerecognitionqueue.h"
 #include "recognizedfaceslist.h"
 
@@ -37,7 +37,7 @@ public:
     void finish();
 private:
     Gtk::Box container;
-    VideoArea videoArea;
+    MatFrameArea videoArea;
     RecognizedFacesList recognizedFaces;
 
     FaceRecognitionQueue recognitionQueue;
