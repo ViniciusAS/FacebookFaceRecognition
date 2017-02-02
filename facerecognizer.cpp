@@ -70,7 +70,7 @@ bool FaceRecognizer::init(FaceRecognizer::InitType initType){
             printf("Traning\n");
             recognizer->train(images,labels);
             printf("Saving train to file\n");
-            system("mkdir ./train/");
+            system("mkdir -p ./train/");
             recognizer->save(train_file);
             // save train image size
             vector<string*> values(1);
