@@ -37,8 +37,8 @@ private:
     
     RecognizedFacesList *recognizedList;
 
-    int im_width = 0;
-    int im_height = 0;
+    int im_width = 300; //0;
+    int im_height = 300; //0
     const std::string imagesize_train_file = "./train/imagesize-train.yml";
     const std::string train_file = "./train/train.yml";
     const std::string labels_file = "./labels.csv";

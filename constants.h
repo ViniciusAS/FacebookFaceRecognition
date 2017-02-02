@@ -39,7 +39,7 @@ namespace Constants {
     const string defaultFaceDetection = frontalface_alt2;
     
     const double scaleFactor = 1.9;
-    const double deepScaleFactor = 1.009;
+    const double deepScaleFactor = 1.1;
 
 }
 

@@ -56,7 +56,7 @@ bool FaceRecognizer::init(FaceRecognizer::InitType initType){
             }
         }
         case InitType::TRAIN:
-            printf("Traning\n");
+            printf("Loading data\n");
             loadFacesDatabaseFile();
             if (images.size() == 0){
                 printf("Error: No valid image found in file\n");
@@ -67,7 +67,9 @@ bool FaceRecognizer::init(FaceRecognizer::InitType initType){
                 printf("Error: Normalized images error, no face recognized\n");
                 return false;
             }
+            printf("Traning\n");
             recognizer->train(images,labels);
+            printf("Saving train to file\n");
             recognizer->save(train_file);
             // save train image size
             vector<string*> values(1);
@@ -113,7 +115,11 @@ bool FaceRecognizer::cropFace(Mat &image){
     if (image.rows == 0 || image.cols == 0 || image.empty()){
         return false;
     }
-    faces = ObjectDetector::deepDetectFaces(image);
+    faces = ObjectDetector::detectFaces(image);
+    if ( faces.size() == 0 ){
+        std::printf("Warning: simple detect face did'nt work, using deep face detection\n");
+        faces = ObjectDetector::deepDetectFaces(image);
+    }
     if ( faces.size() == 0 ){
 //        std::printf("Warning: no face found at image, using it anyway\n");
 //        return true;
@@ -141,7 +147,7 @@ void FaceRecognizer::normalizeImages(){
         Mat &image = images[i];
         if ( !cropFace(image) ){
             std::printf(
-                "Normalize warning #%d: Training image label %d was invalid, removing from list\n",
+                "Normalize warning #%d: Training image from label %d was invalid, removing from list\n",
                 ++normalizeWarningCount, labels[i]
             );
             images.erase( images.begin()+i );
@@ -162,6 +168,7 @@ void FaceRecognizer::normalizeImages(){
                 INTER_CUBIC
             );
         }
+        std::printf("Normalizing images %lu/%lu\n", i+1, images.size());
     }
 }
 

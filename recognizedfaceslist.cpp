@@ -9,7 +9,7 @@ RecognizedFacesList::RecognizedFacesList()
     box.property_margin() = 4;
     box.set_size_request( RecognizedFaceRow::width );
 
-    Glib::signal_timeout().connect( sigc::mem_fun(*this, &RecognizedFacesList::updateRecognized), 80 );
+    Glib::signal_timeout().connect( sigc::mem_fun(*this, &RecognizedFacesList::updateRecognized), 90 );
 }
 
 RecognizedFacesList::~RecognizedFacesList()

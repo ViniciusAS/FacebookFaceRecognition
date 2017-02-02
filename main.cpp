@@ -59,7 +59,6 @@ int main(int argc, char**argv) {
         return justTrain();
     }
 
-
     bool isRunning = true;
     
     RefPtr<Application> app = Application::create( "br.univali.lia.FaceRecognition" );
