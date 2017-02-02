@@ -115,11 +115,15 @@ bool FaceRecognizer::cropFace(Mat &image){
     if (image.rows == 0 || image.cols == 0 || image.empty()){
         return false;
     }
+<<<<<<< HEAD
     faces = ObjectDetector::detectFaces(image);
     if ( faces.size() == 0 ){
         std::printf("Warning: simple detect face did'nt work, using deep face detection\n");
         faces = ObjectDetector::deepDetectFaces(image);
     }
+=======
+    faces = ObjectDetector::deepDetectFaces(image);
+>>>>>>> 9b96b09b8727400e6690f64dd44ef605013b6971
     if ( faces.size() == 0 ){
 //        std::printf("Warning: no face found at image, using it anyway\n");
 //        return true;
@@ -147,7 +151,11 @@ void FaceRecognizer::normalizeImages(){
         Mat &image = images[i];
         if ( !cropFace(image) ){
             std::printf(
+<<<<<<< HEAD
                 "Normalize warning #%d: Training image from label %d was invalid, removing from list\n",
+=======
+                "Normalize warning #%d: Training image label %d was invalid, removing from list\n",
+>>>>>>> 9b96b09b8727400e6690f64dd44ef605013b6971
                 ++normalizeWarningCount, labels[i]
             );
             images.erase( images.begin()+i );
@@ -168,7 +176,10 @@ void FaceRecognizer::normalizeImages(){
                 INTER_CUBIC
             );
         }
+<<<<<<< HEAD
         std::printf("Normalizing images %lu/%lu\n", i+1, images.size());
+=======
+>>>>>>> 9b96b09b8727400e6690f64dd44ef605013b6971
     }
 }
 
