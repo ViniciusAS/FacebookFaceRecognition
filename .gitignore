@@ -1,12 +1,11 @@
 FaceRecognition.pro.user*
 
-# faces
+# faces database
 yalefaces/
 liafaces/
 
 # train files
-train/imagesize-train.yml
-train/train.yml
+train/
 
 # added for ignoring opencv installation
 opencv/
