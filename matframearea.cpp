@@ -41,11 +41,16 @@ void MatFrameArea::setFrame(const cv::Mat &img){
         cv::cvtColor(mat, mat, CV_BGR2RGB);
     }
     cv::flip(mat,mat,1);
+    frameMutex.lock();
     this->frame = mat;
+    frameMutex.unlock();
 }
 
 cv::Mat MatFrameArea::getFrame(){
-    return frame;
+    frameMutex.lock();
+    cv::Mat frameClone = frame.clone();
+    frameMutex.unlock();
+    return frameClone;
 }
 
 void MatFrameArea::setFaces(const std::vector<cv::Rect>& faces){

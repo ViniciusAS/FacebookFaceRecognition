@@ -76,5 +76,5 @@ void AppWindow::finish(){
 void AppWindow::setFrame(const cv::Mat &image){
     frames.push(image);
     cond.notify_one();
-    videoArea.setFrame(image.clone());
+    videoArea.setFrame(image);
 }

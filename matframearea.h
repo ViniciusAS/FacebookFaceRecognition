@@ -10,6 +10,7 @@
 #define VIDEOAREA_H
 
 #include <vector>
+#include <mutex>
 
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
@@ -47,6 +48,7 @@ private:
         double widht, height;
     };
     
+    std::mutex frameMutex;
     cv::Mat frame;
     std::vector<Rectangle> facesRects;
     
